@@ -37,18 +37,41 @@ def calculate_for_projectile_motion(mass, force, distance, angle_deg):
     return initial_speed, vertical_velocity, horizontal_velocity, time_in_air, max_height, length_traveled
 
 
-def plot_trajectory(horizontal_velocity, vertical_velocity, time_in_air):
+def plot_trajectory(horizontal_velocity, vertical_velocity, time_in_air, angle_deg):
     t_values = np.linspace(0, time_in_air, 100)
 
     x_values = horizontal_velocity * t_values
 
     y_values = vertical_velocity * t_values - 0.5 * G * t_values**2
 
-    plt.plot(x_values, y_values)
-    plt.xlabel("Distance traveled (m)")
-    plt.ylabel("Height (m)")
-    plt.title("Projectile motion")
-    plt.grid(True)
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(x_values, y_values, label = "Projectile path")
+    max_index = np.argmax(y_values)
+    x_top = x_values[max_index]
+    y_top = y_values[max_index]
+
+    ax.plot(x_top, y_top, 'ro', label = "Maximum height")  # Mark the maximum height point
+    ax.annotate(
+        f"Top point\n({x_top:.2f}, {y_top:.2f})",
+        xy=(x_top, y_top),
+        xytext=(60,20),
+        textcoords='offset points',
+        arrowprops=dict(arrowstyle='->')
+    )
+
+    ax.text(
+        0.02, 0.95,
+        f"Launch angle: {angle_deg:.1f}°",
+        transform=ax.transAxes,
+        verticalalignment='top',
+        bbox=dict(boxstyle="round", facecolor="white", alpha=0.8)
+    )
+
+
+    ax.set_xlabel("Distance traveled (m)")
+    ax.set_ylabel("Height (m)")
+    ax.set_title("Projectile Motion")
+    ax.grid(True)
     plt.show()
 
 
@@ -85,7 +108,8 @@ def main():
     print(f"Max height: {max_height:.3f} m")
     print(f"Time in air: {time_in_air:.3f} s")
 
-    plot_trajectory(horizontal_velocity, vertical_velocity, time_in_air)
+    plot_trajectory(horizontal_velocity, vertical_velocity, time_in_air, angle_deg)
+
 
 if __name__ == "__main__":
     main()
