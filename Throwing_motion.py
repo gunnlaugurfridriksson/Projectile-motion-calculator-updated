@@ -53,10 +53,14 @@ def plot_trajectory(horizontal_velocity, vertical_velocity, time_in_air):
 
 
 def main():
-    mass = float(input("Input mass of object (kg): "))
-    force = float(input("Input force applied (N): "))
-    distance = float(input("Input distance force was applied over (m): "))
-    angle_deg = float(input("Input launch angle (degrees): "))
+    try:
+        mass = float(input("Input mass of object (kg): "))
+        force = float(input("Input force applied (N): "))
+        distance = float(input("Input distance force was applied over (m): "))
+        angle_deg = float(input("Input launch angle (degrees): "))
+    except ValueError:
+        print("Please enter numbers only. Example: 1.5")
+        return
 
     if mass <= 0:
         print("Mass must be greater than 0.")
@@ -82,7 +86,6 @@ def main():
     print(f"Time in air: {time_in_air:.3f} s")
 
     plot_trajectory(horizontal_velocity, vertical_velocity, time_in_air)
-
 
 if __name__ == "__main__":
     main()
